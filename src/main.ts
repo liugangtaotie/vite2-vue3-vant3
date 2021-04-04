@@ -6,8 +6,11 @@ import router, { setupRouter } from "./router";
 
 import { setupStore } from "./store";
 
-import vant from "./utils/vant";
-import "vant/lib/index.css"; // 全局引入样式
+// import vant from "./utils/vant";
+// import "vant/lib/index.css"; // 全局引入样式
+
+import Vant from "vant";
+import "vant/lib/index.less";
 
 (async () => {
   const app = createApp(App);
@@ -23,7 +26,7 @@ import "vant/lib/index.css"; // 全局引入样式
   // Configure vuex store
   setupStore(app);
 
-  app.use(vant);
+  app.use(Vant);
 
   // Register global directive
   // setupGlobDirectives(app)
