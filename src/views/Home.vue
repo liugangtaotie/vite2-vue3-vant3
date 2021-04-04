@@ -1,65 +1,85 @@
 <template>
-  <p @click="$router.push('about')">home</p>
-  <div>vuex:{{ $store.state.num }}</div>
-  <button @click="add">++</button>
-  <br />
-  <van-button disabled type="primary">Diabled</van-button>
-
-  <van-divider />
-
-  <van-button type="success">Success</van-button>
-
-  <van-divider />
-
-  <van-tabs v-model:active="active">
-    <van-tab v-for="index in 4" :title="'tab' + index"> content of tab {{ index }} </van-tab>
-  </van-tabs>
-
-  <van-tabbar v-model="activeFooter">
-    <van-tabbar-item icon="home-o">Tab</van-tabbar-item>
-    <van-tabbar-item icon="search">Tab</van-tabbar-item>
-    <van-tabbar-item icon="friends-o">Tab</van-tabbar-item>
-    <van-tabbar-item icon="setting-o">Tab</van-tabbar-item>
-  </van-tabbar>
+  <div class="home-model tcenter">
+    <van-notice-bar
+      text="Technology is the common soul of the people who developed it."
+      left-icon="volume-o"
+    />
+    <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
+      <van-swipe-item>1</van-swipe-item>
+      <van-swipe-item>2</van-swipe-item>
+      <van-swipe-item>3</van-swipe-item>
+      <van-swipe-item>4</van-swipe-item>
+    </van-swipe>
+    <van-divider />
+    <van-button class="flex mt10" type="primary" @click="$router.push('/about')"
+      >home,点击跳转about</van-button
+    >
+    <div class="flex flex_center single">
+      store的count数据 <span class="ml20 f30 t2">{{ $store.state.count }}</span>
+    </div>
+    <van-button class="flex mt10" type="primary" @click="onClickAdd">add +</van-button>
+    <van-button style="margin-left: 10px" class="flex mt10 ml10" type="primary" @click="onClickSub"
+      >dec -</van-button
+    >
+  </div>
+  <MyFooter :active="0"></MyFooter>
 </template> 
  
 <script lang='ts'>
 import { defineComponent, onMounted, computed, reactive, ref, toRefs } from "vue";
 import { useStore } from "vuex";
+import MyFooter from "@/components/MyFooter.vue";
 
 export default defineComponent({
   name: "home",
-  components: {},
+  components: { MyFooter },
   setup(props: any) {
     let state = reactive({ num: 10, color: "#ccc" });
 
     const activeFooter = ref(0);
     const active = ref(2);
 
-    onMounted(() => {});
-    const test = computed(() => {
-      return "";
-    });
-
     const store = useStore();
 
-    const add = () => {
-      store.commit("addNum");
-      state.num = store.state.num;
-      state.num > 20 ? (state.color = "pink") : (state.color = "#ccc");
-    };
+    function onClickAdd() {
+      store.commit("increment");
+    }
+
+    function onClickSub() {
+      store.commit("subtraction");
+    }
+
     return {
       activeFooter,
       active,
       ...toRefs(state),
       ...toRefs(props),
-      test,
-      add,
+      onClickAdd,
+      onClickSub,
     };
   },
 });
 </script>
 
-function ref(arg0: number) {
-  throw new Error("Function not implemented.");
+<style lang='less' scoped>
+.home-model {
+  width: 100%;
+  height: 100vh;
+  padding: 10px;
 }
+
+.my-swipe .van-swipe-item {
+  font-size: 20px;
+  line-height: 150px;
+  color: #fff;
+  text-align: center;
+  background-color: #07c160;
+}
+
+.single {
+  width: 100%;
+  height: 50px;
+  margin-top: 20px;
+}
+</style>
+

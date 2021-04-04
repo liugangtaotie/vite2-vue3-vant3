@@ -3,7 +3,6 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import tsconfigPaths from "vite-tsconfig-paths";
 import copy from "rollup-plugin-copy";
-import vitePluginImp from "vite-plugin-imp";
 
 import pkg from "./package.json";
 import moment from "moment";
@@ -27,21 +26,29 @@ export default defineConfig({
   // 配置别名
   resolve: {
     alias: [
-      // {
-      //   "@": path.resolve(__dirname, "src"),
-      //   "@API": path.resolve(__dirname, "src/api"),
-      //   "@STA": path.resolve(__dirname, "static"),
-      //   "@ASS": path.resolve(__dirname, "src/assets"),
-      //   "@COM": path.resolve(__dirname, "src/components"),
-      //   "@VIE": path.resolve(__dirname, "src/views"),
-      // },
       {
         find: /^~/,
         replacement: "",
       },
       {
+        find: "@",
+        replacement: resolve(__dirname, "src"),
+      },
+      {
+        find: "@API",
+        replacement: resolve(__dirname, "src/api"),
+      },
+      {
         find: "@ASS",
         replacement: resolve(__dirname, "src/assets"),
+      },
+      {
+        find: "@COM",
+        replacement: resolve(__dirname, "src/components"),
+      },
+      {
+        find: "@VIE",
+        replacement: resolve(__dirname, "src/views"),
       },
     ],
   },
@@ -54,22 +61,6 @@ export default defineConfig({
       targets: [{ src: "static/*", dest: "dist/static" }],
       hook: "writeBundle", // notice here
     }),
-    // 按需加载依赖库
-    // vitePluginImp({
-    //   libList: [
-    //     {
-    //       libName: "vant",
-    //       style(name) {
-    //         if (/CompWithoutStyleFile/i.test(name)) {
-    //           // This will not import any style file
-    //           return false;
-    //         }
-    //         // 注意此处必须引入less，否则自定义主题不起作用
-    //         return `vant/es/${name}/index.less`;
-    //       },
-    //     },
-    //   ],
-    // }),
   ],
 
   css: {
